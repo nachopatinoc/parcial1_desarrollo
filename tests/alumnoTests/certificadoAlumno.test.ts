@@ -38,6 +38,12 @@ describe('Generación de Certificados', () => {
         expect(buffer.length).toBeGreaterThan(0);
     });
 
+    test("debería generar un certificado en formato JSON"), async () => {
+        expect(AlumnoCreado).toBeTruthy();
+
+        const buffer = await AlumnoService.obetenerCertificadoAlumnoRegular(alumnoCreado!.id!, "json");
+    }
+
     test('debería lanzar error para formato no válido', async () => {
         const alumno = await crearInstanciaAlumno();
         const alumnoCreado = await AlumnoService.crearAlumno(alumno);
