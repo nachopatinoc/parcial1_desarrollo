@@ -49,13 +49,10 @@ export class DOCXDocument extends Document {
 
 export class ODTDocument extends Document {
     async generar(options: DocumentOptions): Promise<Buffer> {
-        const html = await this.renderTemplate(options.context);
-
-        const docxBuffer = await htmlToDocx(html);
+        
         const docxPath = `${options.carpeta}/${options.nombre}.docx`;
         const odtPath = `${options.carpeta}/${options.nombre}.odt`;
 
-        await fs.writeFile(docxPath, docxBuffer as Buffer);
 
         await execAsync(`pandoc "${docxPath}" -o "${odtPath}"`);
 
