@@ -13,12 +13,12 @@ export class AlumnoService {
         return this.AlumnoRepository.buscarPorId(id);
     }
 
-    static actualizarAlumno(nroLegajo: number, nuevosDatos: Partial<AlumnoAtributos>): Promise<AlumnoAtributos | null> {
-        return this.AlumnoRepository.actualizar(nroLegajo, nuevosDatos);
+    static actualizarAlumno(id: number, nuevosDatos: Partial<AlumnoAtributos>): Promise<AlumnoAtributos | null> {
+        return this.AlumnoRepository.actualizar(id, nuevosDatos);
     }
 
-    static eliminarAlumno(nroLegajo: number): Promise<AlumnoAtributos | null> {
-        return this.AlumnoRepository.eliminar(nroLegajo);
+    static eliminarAlumno(id: number): Promise<AlumnoAtributos | null> {
+        return this.AlumnoRepository.eliminar(id);
     }
 
     static async obtenerCertificadoAlumnoRegular(id: number, tipo: string): Promise<Buffer> {
