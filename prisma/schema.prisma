@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuarios {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  email    String   @unique
+  creadoEn DateTime @default(now())
+}
+
+model Universidades {
+  id         Int          @id @default(autoincrement())
+  nombre     String
+  sigla      String
+  facultades Facultades[]
+}
+
+model Especialidades {
+  id            Int             @id @default(autoincrement())
+  nombre        String
+  letra         String
+  observacion   String
+  orientaciones Orientaciones[]
+  alumnos       Alumnos[]
+}
+
+model Planes {
+  id            Int             @id @default(autoincrement())
+  nombre        String
+  fechaInicio   String
+  fechaFin      String
+  observacion   String
+  orientaciones Orientaciones[]
+}
+
+model Materias {
+  id            Int             @id @default(autoincrement())
+  nombre        String
+  codigo        String
+  observacion   String
+  orientaciones Orientaciones[]
+}
+
+model Orientaciones {
+  id             Int            @id @default(autoincrement())
+  nombre         String
+  especialidad   Especialidades @relation(fields: [especialidadId], references: [id])
+  especialidadId Int
+  plan           Planes         @relation(fields: [planId], references: [id])
+  planId         Int
+  materia        Materias       @relation(fields: [materiaId], references: [id])
+  materiaId      Int
+}
+
+model Alumnos {
+  id              Int            @id @default(autoincrement())
+  nroLegajo       Int            @unique
+  apellido        String
+  nombre          String
+  nroDocumento    String
+  tipoDocumento   String
+  fechaNacimiento String
+  sexo            String
+  fechaIngreso    DateTime
+  facultad        Facultades     @relation(fields: [facultadId], references: [id])
+  facultadId      Int
+  especialidad    Especialidades @relation(fields: [especialidadId], references: [id])
+  especialidadId  Int
+}
+
+model CategoriasCargo {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  cargos      Cargos[]
+  creadoEn    DateTime @default(now())
+}
+
+model TiposDedicaciones {
+  id            Int      @id @default(autoincrement())
+  nombre        String
+  observacion   String?
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  cargos Cargos[]
+}
+
+model Cargos {
+  id               Int               @id @default(autoincrement())
+  nombre           String
+  puntos           Int
+  descripcion      String?
+  categoriaCargo   CategoriasCargo   @relation(fields: [categoriaId], references: [id])
+  categoriaId      Int
+  tipoDedicacion   TiposDedicaciones @relation(fields: [tipoDedicacionId], references: [id])
+  tipoDedicacionId Int
+  autoridades      Autoridades[]
+  creadoEn         DateTime          @default(now())
+}
+
+model Autoridades {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  apellido String
+  email    String
+  telefono String
+  cargo    Cargos   @relation(fields: [cargoId], references: [id])
+  cargoId  Int
+  creadoEn DateTime @default(now())
+}
+
+model Facultades {
+  id            Int           @id @default(autoincrement())
+  nombre        String
+  abreviatura   String
+  directorio    String
+  sigla         String
+  codigoPostal  String
+  ciudad        String
+  domicilio     String
+  telefono      String
+  contacto      String
+  email         String
+  creadoEn      DateTime      @default(now())
+  universidadId Int
+  universidad   Universidades @relation(fields: [universidadId], references: [id])
+  alumnos       Alumnos[]
+}
+
+model Grados {
+  id     Int    @id @default(autoincrement())
+  nombre String
+}
+
+model Grupos {
+  id     Int    @id @default(autoincrement())
+  nombre String
+}
+
+model Areas {
+  id     Int    @id @default(autoincrement())
+  nombre String
+}
+
+model Departamentos {
+  id     Int    @id @default(autoincrement())
+  nombre String
+}
